@@ -16,6 +16,15 @@
   }
   function soDigitos(s) { return String(s || "").replace(/\D/g, ""); }
   function el(id) { return document.getElementById(id); }
+     // Junta as seções comuns (assets/secoes-comuns.js) com as do prédio
+  C.secoes = C.secoes || [];
+  (window.SECOES_COMUNS || []).forEach(function (comum) {
+    var jaExiste = C.secoes.some(function (s) { return s.id === comum.id; });
+    if (jaExiste) return; // o prédio tem versão própria: ela prevalece
+    var pos = C.secoes.findIndex(function (s) { return s.id === comum.depoisDe; });
+    if (pos === -1) C.secoes.push(comum);       // não achou: vai para o final
+    else C.secoes.splice(pos + 1, 0, comum);    // insere logo depois
+  });
 
   document.title = "Cartilha do Morador – " + C.predio;
 
