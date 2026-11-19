@@ -16,6 +16,6 @@ window.SECOES_COMUNS = [
       "Caso precise de manutenção no seu apartamento, indicamos prestadores."
     ],
     aviso: "Não faça nem contrate reparos nas áreas comuns sem informar o síndico ou a administradora.",
-       links: [{ texto: "Abrir chamado", url: "{linkChamado}" }]
+       links: [{ texto: "Abrir chamado", url:" }]
   }
 ];
