@@ -16,11 +16,20 @@
   }
   function soDigitos(s) { return String(s || "").replace(/\D/g, ""); }
   function el(id) { return document.getElementById(id); }
-     // Junta as seções comuns (assets/secoes-comuns.js) com as do prédio
+      // Troca {campo} pelo valor do campo no prédio (ex.: {linkChamado})
+  function preencher(texto) {
+    return String(texto).replace(/\{(\w+)\}/g, function (trecho, campo) {
+      return C[campo] || "[" + campo + "]";
+    });
+  }
+
+  // Junta as seções comuns (assets/secoes-comuns.js) com as do prédio
   C.secoes = C.secoes || [];
-  (window.SECOES_COMUNS || []).forEach(function (comum) {
-    var jaExiste = C.secoes.some(function (s) { return s.id === comum.id; });
+  (window.SECOES_COMUNS || []).forEach(function (original) {
+    var jaExiste = C.secoes.some(function (s) { return s.id === original.id; });
     if (jaExiste) return; // o prédio tem versão própria: ela prevalece
+    var comum = JSON.parse(JSON.stringify(original)); // cópia, para não alterar a original
+    (comum.links || []).forEach(function (l) { l.url = preencher(l.url); });
     var pos = C.secoes.findIndex(function (s) { return s.id === comum.depoisDe; });
     if (pos === -1) C.secoes.push(comum);       // não achou: vai para o final
     else C.secoes.splice(pos + 1, 0, comum);    // insere logo depois
